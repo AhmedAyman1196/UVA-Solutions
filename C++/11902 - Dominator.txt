@@ -1,0 +1,155 @@
+#include <cstdlib>
+#include <iostream>
+#include <map>
+#include <stdio.h>
+#include <vector>
+#include<bits/stdc++.h>
+#include <ctype.h>
+#include <list>
+#include <stack>
+#include <queue>
+#include <string.h>
+#include <iomanip>
+#include <string>
+#include <algorithm>
+#include <cmath>
+#define _CRT_SECURE_NO_DEPRECATE
+#define INF 1000000000
+#define Set(a, s) memset(a, s, sizeof (a))
+#define forpos(i,j,k) for (int i=0 ; i<j ; i+=k)
+#define forneg(i,j,k) for (int i=j ;i>=0 ;i-=k)
+#define PI 3.14159265358979323846
+#define pf printf
+#define SSTR( x ) dynamic_cast< std::ostringstream & >( \
+       ( std::ostringstream() << std::dec << x ) ).str()
+#include<queue>
+#define UNVISITED 0
+#define VISITED  1
+
+
+using namespace std;
+
+typedef long long ll;
+typedef std::pair<int,int> ii;
+typedef std::pair<std::string,int> si;
+typedef vector<int> vi;
+typedef vector<ii> vii;
+/*
+ll bfs( ll m )
+{
+
+    ii x = q.front();q.pop();
+    vis[x.first]=1;
+    if(x.first==m)return x.second;
+    if(x.first-1>=0 && vis[x.first-1]!=1)
+    q.push(pair<int,int>(x.first-1,x.second+1));
+    if(x.first*2 <=2*m && vis[x.first*2]!=1)
+    q.push(pair<int,int>(x.first*2,x.second+1));
+
+    return bfs(m);
+
+}
+*/
+
+vector<vi> AdjList;
+int vis1[105],vis2[105] ;
+int result[101][101] ;
+int tc , n  ,x ;
+void prints(){
+cout<<"+";
+forpos(i, 2*n-1, 1){
+
+     cout<<"-" ;
+}
+cout<<"+\n";
+}
+
+
+void dfs1(int u){
+    vis1[u]=1;
+    forpos(i ,AdjList[u].size() , 1){
+
+        if(!vis1[AdjList[u][i]]){dfs1(AdjList[u][i]) ;}
+    }
+}
+void dfs(int u  , int stop){
+if(u==stop)return ;
+vis2[u]=1 ;
+    forpos(i ,AdjList[u].size() , 1 ){
+       if(!vis2[AdjList[u][i]])dfs(AdjList[u][i] , stop) ;
+    }
+    }
+
+int main(){
+    cin >> tc ;
+    int counter =1 ;
+   while( tc--){
+
+        cin>>n ;
+        AdjList.assign(n,vi()) ;
+        forpos(i,n,1){vis1[i]=vis2[i]=0;}
+        forpos(i,n,1)
+        forpos(j ,n,1){
+            cin>>x ;
+            if(x==1)
+            AdjList[i].push_back (j) ;
+
+        }
+
+        dfs1(0) ;
+        for(int i  = 0 ; i<n ; i++){
+            forpos(k,n,1)vis2[k]=0 ;
+            dfs(0 ,i) ;
+            forpos(j , n , 1)
+                if(!vis2[j]&&vis1[j])result[i][j]=1;
+                else result[i][j]=0;
+            if(vis1[i])result[i][i] =1 ;
+            else result[i][i]=0;
+        }
+
+        cout<<"Case "<<counter++<<":\n" ;
+        prints() ;
+        forpos( i , n , 1){
+            cout<<"|" ;
+            forpos(j , n ,1){
+            if(result[i][j])cout<<"Y|";
+            else cout<<"N|" ;
+            }
+            cout<<"\n" ;
+        prints() ;
+        }
+   }
+
+   return 0;
+}
+/*
+int main(){
+    int t ; cin>>t ;
+    while(t--){
+
+      string s ;cin>>s;
+      int counter =1  ;
+      for(int i  = 0 ;i <s.size() ; i++){
+            counter = 1 ;
+            cout<<s[i];
+            for(int j = i+1 ; j<s.size();j++){
+                if(s[i]==s[j]){
+                        counter++ ;
+                i++ ;
+                }
+
+                else break ;
+            }
+            cout<<counter ;
+
+      }
+      cout<<" " ;
+
+
+
+
+    }
+
+return 0 ;
+}
+*/
